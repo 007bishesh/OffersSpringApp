@@ -34,7 +34,7 @@ public class OffersDAO {
 					offer.setName(rs.getString("name"));
 					offer.setEmail(rs.getString("email"));
 					offer.setText(rs.getString("text"));
-					
+					System.out.println("test");
 					return offer;
 				}
 				
