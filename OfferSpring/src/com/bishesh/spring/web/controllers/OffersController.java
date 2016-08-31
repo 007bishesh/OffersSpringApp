@@ -1,20 +1,16 @@
 package com.bishesh.spring.web.controllers;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.List;
 
-import javax.naming.Context;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
-import javax.sql.DataSource;
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.bishesh.spring.web.dao.Offer;
 import com.bishesh.spring.web.service.OffersService;
@@ -40,33 +36,36 @@ public class OffersController {
 		this.offersService = offersService;
 	}
 
-	@RequestMapping("/")
-	public String showHome(Model model) throws NamingException{
-		
-		Context initContext = new InitialContext();
-		Context envContext  = (Context)initContext.lookup("java:/comp/env");
+	@RequestMapping("/offers")
+	public String showOffers(Model model){
 		
 		List<Offer> offers=offersService.getCurrent();
 		model.addAttribute("offers", offers);
-		DataSource ds = (DataSource)envContext.lookup("jdbc/myoracle");
-		String test="";
-		try {
-			Connection conn = ds.getConnection();
-			Statement stmt=conn.createStatement();  
-			
-			//step4 execute query  
-			ResultSet rs=stmt.executeQuery("select name from offers");  
-			while(rs.next())  
-			{
-			 test=rs.getString(1);
-			System.out.println(test);
+		
+		return "offers";
+	}
+	
+	@RequestMapping("/createoffer")
+	public String createOffer(Model model){
+		model.addAttribute("offer", new Offer());
+		return "createoffer";
+	}
+	
+	@RequestMapping(value="/docreate",method=RequestMethod.POST)
+	public String doCreate( Model model, @Valid Offer offer, BindingResult result){
+		System.out.println(offer);
+		
+		if(result.hasErrors()){
+			System.out.println("Form does not validate");
+			List<ObjectError> errors=result.getAllErrors();
+			for(ObjectError error : errors){
+				System.out.println(error.getDefaultMessage());
 			}
-			
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			return "createoffer";
 		}
-		model.addAttribute("name", test);
-		return "home";
-	}	
+		else{
+			System.out.println("Form validated");
+		}
+		return "offercreated";
+	}
 }

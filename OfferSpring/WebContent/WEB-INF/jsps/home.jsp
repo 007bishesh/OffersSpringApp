@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/sql" prefix="sql" %>
+	pageEncoding="ISO-8859-1"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/sql" prefix="sql"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -9,18 +9,26 @@
 <title>Insert title here</title>
 </head>
 <body>
-Hi there 
 
-Request<%= request.getAttribute("name") %> <p/>
-
-${name} <p/>
-
-From JSTL : <c:out value="${name}"></c:out> <p/>
-
-<c:forEach var="row" items="${offers}">
-ID:${row.id}<br/>
-Name:${row.name}<br/>
-</c:forEach>
+	<header>
+	<div class="logo">
+	
+	</div>
+	<nav>
+	<p>
+		<a href="${pageContext.request.contextPath}/offers">Show Current
+			Offers</a>
+	</p>
+	<p>
+		<a href="${pageContext.request.contextPath}/createoffer">Add a new
+			offer</a>
+	</p>
+	</nav>
+	<h1>Offers Portfolio</h1>
+	<p class="kicker">Developer</p>
+	
+	</header>
+	
 
 </body>
 </html>
